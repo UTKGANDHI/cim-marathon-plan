@@ -1,0 +1,1380 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>Utkarsh — CIM 2026 3:55 Marathon Plan</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <style>
+    :root{
+      --bg:#f5f8fb; --panel:#ffffff; --panel2:#edf3f8; --text:#102033;
+      --muted:#5f7287; --line:#d8e1ea; --accent:#147d64; --accent2:#2e6fc2;
+      --warn:#9a6500; --danger:#b33d3d; --shadow:0 18px 55px rgba(26,45,65,.12);
+      --hero1:rgba(255,255,255,.98); --hero2:rgba(239,246,250,.97);
+      --body1:rgba(20,125,100,.10); --body2:rgba(46,111,194,.08);
+      --glass:rgba(245,248,251,.88); --card1:rgba(255,255,255,.96); --card2:rgba(245,249,252,.96);
+      --soft:rgba(16,32,51,.035); --modal1:#ffffff; --modal2:#eef4f8;
+      --radius:20px;
+    }
+    html[data-theme="dark"]{
+      --bg:#07111f; --panel:#0c1a2b; --panel2:#11243a; --text:#edf5ff;
+      --muted:#9eb2c9; --line:#203852; --accent:#72e1b8; --accent2:#82b8ff;
+      --warn:#ffd479; --danger:#ff9b9b; --shadow:0 18px 55px rgba(0,0,0,.28);
+      --hero1:rgba(17,36,58,.95); --hero2:rgba(8,22,36,.93);
+      --body1:rgba(114,225,184,.17); --body2:rgba(130,184,255,.14);
+      --glass:rgba(7,17,31,.86); --card1:rgba(17,36,58,.84); --card2:rgba(10,25,41,.86);
+      --soft:rgba(255,255,255,.035); --modal1:#10243a; --modal2:#091827;
+    }
+    html[data-theme="light"]{
+      color-scheme:light;
+    }
+    html[data-theme="dark"]{
+      color-scheme:dark;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0; font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+      "Segoe UI", sans-serif; background:
+      radial-gradient(1100px 500px at 10% -10%, var(--body1), transparent 60%),
+      radial-gradient(900px 450px at 90% 0%, var(--body2), transparent 60%), var(--bg);
+      color:var(--text); line-height:1.55;
+    }
+    button{font:inherit}
+    .app{max-width:1220px;margin:0 auto;padding:28px 20px 80px}
+    .hero{
+      position:relative;overflow:hidden;padding:34px;border:1px solid var(--line);
+      border-radius:28px;background:linear-gradient(145deg,var(--hero1),var(--hero2));
+      box-shadow:var(--shadow);
+    }
+    .hero:after{
+      content:""; position:absolute; width:420px;height:420px;border-radius:50%;
+      background:radial-gradient(circle,rgba(114,225,184,.14),transparent 65%);
+      right:-100px;top:-180px;pointer-events:none
+    }
+    .eyebrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;color:var(--accent);
+      font-weight:800;text-transform:uppercase;letter-spacing:.12em;font-size:.78rem}
+    h1{font-size:clamp(2.25rem,6vw,4.4rem);line-height:.98;margin:14px 0 16px;letter-spacing:-.05em}
+    h2{font-size:1.65rem;margin:0 0 16px;letter-spacing:-.025em}
+    h3{font-size:1.08rem;margin:0 0 9px}
+    p{margin:0 0 12px;color:var(--text)}
+    .lead{font-size:1.08rem;max-width:800px;color:var(--muted)}
+    .badges{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0 0}
+    .badge{padding:8px 11px;border-radius:999px;border:1px solid var(--line);background:var(--soft);
+      color:var(--text);font-size:.88rem;font-weight:700}
+    .badge.accent{color:#061b14;background:var(--accent);border-color:transparent}
+    .top-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+    .btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:10px 14px;border-radius:12px;
+      cursor:pointer;font-weight:750}
+    .btn:hover{transform:translateY(-1px);border-color:#355675}
+    .btn.primary{background:var(--accent);border-color:var(--accent);color:#042218}
+    .nav{position:sticky;top:10px;z-index:20;display:flex;gap:7px;overflow:auto;margin:18px 0;
+      padding:8px;border:1px solid var(--line);border-radius:16px;background:var(--glass);backdrop-filter:blur(14px)}
+    .nav button{white-space:nowrap;border:0;background:transparent;color:var(--muted);padding:9px 12px;border-radius:10px;cursor:pointer;font-weight:750}
+    .nav button.active{background:var(--panel2);color:var(--text)}
+    .section{padding:24px 0}
+    .grid{display:grid;gap:16px}
+    .grid.cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .card{border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(180deg,var(--card1),var(--card2));
+      padding:20px;box-shadow:0 10px 35px rgba(0,0,0,.12)}
+    .metric .value{font-size:1.85rem;font-weight:850;letter-spacing:-.04em}
+    .metric .label{color:var(--muted);font-size:.86rem}
+    .metric .note{color:var(--muted);font-size:.82rem;margin-top:5px}
+    .callout{border-left:4px solid var(--accent);padding:16px 18px;background:rgba(114,225,184,.07);border-radius:12px}
+    .callout.warn{border-left-color:var(--warn);background:rgba(255,212,121,.07)}
+    .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:16px}
+    table{border-collapse:collapse;width:100%;min-width:760px;background:var(--panel)}
+    th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+    th{font-size:.76rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);background:rgba(255,255,255,.025)}
+    td{color:var(--text)}
+    tr:last-child td{border-bottom:0}
+    .zone-name{font-weight:850;color:var(--text)}
+    .pace{font-variant-numeric:tabular-nums;font-weight:750;color:var(--accent)}
+    .muted{color:var(--muted)}
+    .week-toolbar{display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+    .week-list{display:grid;gap:12px}
+    .week{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--card2)}
+    .week-head{width:100%;display:grid;grid-template-columns:80px 1fr auto auto;gap:14px;align-items:center;
+      padding:16px 18px;border:0;background:transparent;color:var(--text);cursor:pointer;text-align:left}
+    .week-head:hover{background:rgba(255,255,255,.025)}
+    .week-num{display:inline-grid;place-items:center;width:48px;height:48px;border-radius:14px;background:var(--panel2);font-weight:900}
+    .week-title{font-weight:850}.week-sub{font-size:.85rem;color:var(--muted);margin-top:2px}
+    .mileage{font-weight:900;color:var(--accent);font-variant-numeric:tabular-nums}
+    .chev{color:var(--muted);font-size:1.25rem}
+    .week-body{padding:0 18px 18px}
+    .days{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+    .day{border:1px solid var(--line);border-radius:14px;padding:13px;background:var(--soft);min-height:136px}
+    .day.long{border-color:rgba(114,225,184,.55);background:rgba(114,225,184,.055)}
+    .day .dayname{font-size:.72rem;color:var(--muted);font-weight:850;letter-spacing:.08em;text-transform:uppercase}
+    .day .dist{font-weight:900;margin:4px 0 6px}
+    .day .details{font-size:.84rem;color:var(--muted)}
+    .pill{display:inline-block;padding:3px 7px;border-radius:999px;background:rgba(130,184,255,.10);color:#cfe2ff;font-size:.72rem;font-weight:800;margin-top:8px}
+    .pill.long{background:rgba(114,225,184,.12);color:#caffea}
+    .chart{width:100%;height:250px}
+    .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.82rem;color:var(--muted);margin-top:8px}
+
+    .calendar-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:9px}
+    .date-card{
+      appearance:none;width:100%;text-align:left;color:var(--text);font:inherit;cursor:pointer;
+      border:1px solid var(--line);border-radius:14px;padding:12px;background:var(--soft);
+      min-height:145px;transition:.16s ease;
+    }
+    .date-card:hover{transform:translateY(-2px);border-color:#426887;background:rgba(255,255,255,.045)}
+    .date-card.long{border-color:rgba(114,225,184,.55);background:rgba(114,225,184,.055)}
+    .date-card.quality{border-color:rgba(130,184,255,.5);background:rgba(130,184,255,.045)}
+    .date-card.race{border-color:var(--warn);background:rgba(255,212,121,.075)}
+    .date-card.rest{opacity:.82}
+    .date-top{display:flex;justify-content:space-between;gap:6px;align-items:flex-start}
+    .date-label{font-size:.75rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+    .date-num{font-size:1.35rem;font-weight:900;line-height:1}
+    .date-title{font-weight:850;margin:10px 0 4px;line-height:1.2}
+    .date-dist{font-size:.82rem;color:var(--accent);font-weight:850}
+    .date-summary{font-size:.78rem;color:var(--muted);margin-top:7px;line-height:1.35}
+    .click-hint{font-size:.7rem;color:var(--muted);margin-top:9px;font-weight:750}
+    .modal-backdrop{
+      position:fixed;inset:0;z-index:100;background:rgba(2,8,14,.78);backdrop-filter:blur(8px);
+      display:grid;place-items:center;padding:18px;
+    }
+    .modal-card{
+      width:min(760px,100%);max-height:90vh;overflow:auto;border:1px solid #365572;border-radius:24px;
+      background:linear-gradient(160deg,var(--modal1),var(--modal2));box-shadow:0 30px 90px rgba(0,0,0,.5);padding:24px;
+    }
+    .modal-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:18px}
+    .modal-title{font-size:1.7rem;font-weight:900;letter-spacing:-.03em;line-height:1.08}
+    .modal-date{color:var(--accent);font-size:.86rem;font-weight:850;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+    .close-btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);width:38px;height:38px;border-radius:11px;cursor:pointer;font-size:1.3rem}
+    .workout-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0 18px}
+    .workout-kpi{border:1px solid var(--line);border-radius:13px;padding:12px;background:rgba(255,255,255,.025)}
+    .workout-kpi span{display:block;color:var(--muted);font-size:.71rem;text-transform:uppercase;letter-spacing:.07em;font-weight:800}
+    .workout-kpi strong{display:block;margin-top:4px;font-size:.96rem}
+    .step-list{display:grid;gap:10px}
+    .step{border:1px solid var(--line);border-radius:14px;padding:13px 14px;background:var(--soft)}
+    .step strong{display:block;color:var(--text);margin-bottom:4px}
+    .step p{font-size:.88rem;margin:0}
+    .track-chip{display:inline-block;border-radius:999px;padding:4px 8px;margin:4px 4px 0 0;font-size:.72rem;font-weight:850;
+      background:rgba(130,184,255,.1);color:#d4e6ff;border:1px solid rgba(130,184,255,.18)}
+    @media (max-width:980px){.calendar-days{grid-template-columns:repeat(4,1fr)}}
+    @media (max-width:640px){
+      .calendar-days{grid-template-columns:1fr 1fr}
+      .workout-kpis{grid-template-columns:1fr}
+      .modal-card{padding:18px}.modal-title{font-size:1.4rem}
+    }
+
+
+    .theme-control{
+      display:flex;align-items:center;gap:5px;padding:5px;border:1px solid var(--line);
+      border-radius:12px;background:var(--panel);margin-left:auto;
+    }
+    .theme-control button{
+      border:0;background:transparent;color:var(--muted);padding:7px 10px;border-radius:8px;
+      cursor:pointer;font-weight:800;font-size:.8rem;
+    }
+    .theme-control button.active{background:var(--panel2);color:var(--text)}
+
+
+    .log-status{
+      display:inline-flex;align-items:center;gap:5px;padding:4px 7px;border-radius:999px;
+      font-size:.69rem;font-weight:900;margin-top:8px;border:1px solid var(--line)
+    }
+    .log-status.done{background:rgba(114,225,184,.13);color:var(--accent);border-color:rgba(114,225,184,.32)}
+    .log-status.modified{background:rgba(255,212,121,.12);color:var(--warn);border-color:rgba(255,212,121,.30)}
+    .log-status.skipped{background:rgba(255,155,155,.10);color:var(--danger);border-color:rgba(255,155,155,.28)}
+    .log-status.planned{background:var(--soft);color:var(--muted)}
+    .date-card.logged{box-shadow:inset 0 0 0 1px rgba(114,225,184,.18)}
+    .log-section{margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}
+    .log-section h3{font-size:1.2rem;margin-bottom:4px}
+    .log-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin-top:13px}
+    .field{display:grid;gap:6px}
+    .field.full{grid-column:1/-1}
+    .field label{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:850}
+    .field input,.field select,.field textarea{
+      width:100%;border:1px solid var(--line);border-radius:11px;background:var(--panel);
+      color:var(--text);padding:10px 11px;font:inherit;outline:none
+    }
+    .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent2)}
+    .field textarea{min-height:82px;resize:vertical}
+    .log-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}
+    .compare-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:13px}
+    .compare-card{border:1px solid var(--line);border-radius:13px;padding:12px;background:var(--soft)}
+    .compare-card .cap{font-size:.7rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:850}
+    .compare-card .big{font-size:1.1rem;font-weight:900;margin-top:4px}
+    .compare-card .sub{font-size:.8rem;color:var(--muted);margin-top:3px}
+    .week-progress{font-size:.76rem;color:var(--muted);margin-top:4px}
+    .week-progress strong{color:var(--text)}
+    .progress-bar{height:6px;background:var(--panel2);border-radius:999px;overflow:hidden;margin-top:6px}
+    .progress-fill{height:100%;background:var(--accent);border-radius:999px;transition:width .2s ease}
+    .summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+    .log-table td,.log-table th{white-space:nowrap}
+    .log-table .notes-cell{white-space:normal;min-width:220px}
+    .empty-state{padding:24px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:14px}
+    .backup-actions{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0}
+    .hidden-input{display:none}
+    @media (max-width:720px){
+      .log-grid,.compare-grid{grid-template-columns:1fr}
+      .summary-grid{grid-template-columns:1fr 1fr}
+    }
+
+    .footer{margin-top:34px;padding-top:24px;border-top:1px solid var(--line);color:var(--muted);font-size:.86rem}
+    .small{font-size:.86rem}
+    ul{margin:8px 0 0 20px;padding:0;color:var(--text)}
+    li{margin:5px 0}
+    .race-row{display:grid;grid-template-columns:120px 170px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+    .race-row:last-child{border-bottom:0}
+    .race-row strong{color:var(--text)}
+    @media (max-width:980px){
+      .grid.cols-4{grid-template-columns:repeat(2,1fr)}
+      .grid.cols-3{grid-template-columns:1fr 1fr}
+      .days{grid-template-columns:1fr 1fr}
+    }
+    @media (max-width:640px){
+      .app{padding:14px 12px 50px}.hero{padding:24px 18px}
+      .grid.cols-4,.grid.cols-3,.grid.cols-2{grid-template-columns:1fr}
+      .week-head{grid-template-columns:58px 1fr auto}.chev{display:none}.days{grid-template-columns:1fr}
+      .race-row{grid-template-columns:1fr;gap:2px}.nav{top:6px}
+    }
+    @media print{
+      :root{--bg:#fff;--panel:#fff;--panel2:#f4f7fa;--text:#101820;--muted:#52606d;--line:#d8dee6;--accent:#147d64}
+      body{background:#fff;color:#111}.app{max-width:none;padding:0}.hero,.card,.week{box-shadow:none}
+      .nav,.top-actions,.week-toolbar{display:none!important}.section{break-inside:avoid}
+      .week-body{display:block!important}.days{grid-template-columns:repeat(5,1fr)}
+      p,td,li,.lead,.day .details{color:#263542}.badge{color:#263542}
+    }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const e = React.createElement;
+
+
+const garminSnapshot = [
+  ["Full Garmin export","Loaded","Activity summaries + metrics + 6,960 original FIT files"],
+  ["Training readiness","62 · Moderate","Jul 26; recovery in progress. Sleep inputs are incomplete, so use as a secondary signal."],
+  ["Training status","Maintaining","Garmin fitness-level trend: no change"],
+  ["Acute / chronic load","539 / 481","Load ratio 1.1 · Garmin status: optimal"],
+  ["Running tolerance","18.4 mi equivalent","Current actual acute distance ~23.2 mi; Garmin flags above tolerance after one hard run"],
+  ["VO₂ max","46","Recent Jul values mostly 46, briefly 47"],
+  ["Lactate threshold","179 bpm @ ~8:47/mi","Auto-detected Jul 22"],
+  ["Running FTP","325 W","Garmin running functional threshold power"],
+  ["Max HR setting","201 bpm","Garmin configured maximum"],
+  ["Resting HR setting","61 bpm","Garmin zone configuration value"],
+  ["Heat acclimation","21%","Jul 26 · deacclimatizing"],
+  ["Endurance score","5,419","Jul 26 Garmin endurance metric"],
+  ["Current marathon prediction","4:42:59","Garmin current-fitness race predictor"],
+  ["CIM projected midpoint","4:00:15","Garmin race-event projection if training continues well"],
+  ["Garmin CIM goal","3:55:00","Goal stored in the Garmin Coach CIM plan"],
+  ["Coach target","Sub-4","Train around ~8:55–9:00/mi MP to target 3:55 while preserving sub-4 margin"]
+];
+
+const profile = {
+  name:"Utkarsh", age:30, sex:"Male", location:"India", relationship:"Nehal's spouse",
+  goal:"3:55 at CIM 2026 · sub-4 outcome", raceDate:"Sunday, December 6, 2026"
+};
+
+const baseline = [
+  ["Recent weekly volume","20.1 → 25.2 → 23.2 mi","Last three completed weeks"],
+  ["Current long run","~9.9 mi","Three recent Saturdays around this level"],
+  ["Jul 25 long run","10.03 mi @ 10:35/mi","Avg HR 154"],
+  ["Jul 14 faster run","5.98 mi @ 8:30/mi","Avg HR 172"],
+  ["Historical half marathon","13.19 mi in ~1:47:18","~8:08/mi"],
+  ["Longest activity","14.06 mi","From the supplied Strava archive"],
+  ["Observed max HR","~197–201 bpm","Use HR as a guide, not a rigid ceiling"],
+  ["3:55 goal pace","~8:58/mi","A 3:55 marathon averages about 8:58 per mile and gives ~5 minutes of sub-4 margin"]
+];
+
+const zones = [
+  {z:"REC",name:"Recovery",purpose:"Very easy / recovery",pace:"11:45–12:45+/mi",hr:"~125–145 · Garmin Z2 → low Z3",rpe:"2–3"},
+  {z:"EASY",name:"Easy aerobic",purpose:"Most running + easy long runs",pace:"10:45–11:45/mi",hr:"~145–158 · Garmin Z3",rpe:"3–4"},
+  {z:"STEADY",name:"Steady",purpose:"Aerobic strength",pace:"9:50–10:25/mi",hr:"~159–166 · high Z3 / low Z4",rpe:"5–6"},
+  {z:"MP",name:"Marathon pace",purpose:"Sub-4 specific work",pace:"8:55–9:00/mi",hr:"~165–173 · Garmin Z4",rpe:"5–7"},
+  {z:"T",name:"Threshold",purpose:"Tempo / long reps",pace:"8:30–8:47/mi",hr:"~172–179 · Garmin Z4",rpe:"7–8"},
+  {z:"I",name:"Interval",purpose:"400–800 m controlled reps",pace:"~7:55–8:20/mi",hr:"~180–192 late · Garmin Z5",rpe:"8–9"}
+];
+
+const garminWatchZones = [
+  ["Garmin Z1","101–120 bpm","Very light / warm-up"],
+  ["Garmin Z2","121–140 bpm","Easy-low aerobic"],
+  ["Garmin Z3","141–160 bpm","Most of your practical easy aerobic running currently lands here"],
+  ["Garmin Z4","161–180 bpm","Steady through threshold; MP usually falls in lower/middle Z4"],
+  ["Garmin Z5","181–201 bpm","High intensity / interval territory"]
+];
+
+const currentGarmin = {
+  readiness:"62 · Moderate",
+  loadRatio:"1.1 · Optimal",
+  tolerance:"18.4 mi equivalent",
+  acuteDistance:"23.2 mi",
+  vo2:"46",
+  lthr:"179 bpm",
+  ltPace:"8:47/mi",
+  ftp:"325 W",
+  heat:"21%",
+  currentMarathon:"4:42:59",
+  projectedCim:"4:00:15",
+  garminGoal:"3:55:00"
+};
+
+
+
+const trackWorkouts = [
+ {w:1,title:"400s + 800s introduction",total:"~5.4 mi",
+  wu:"1.0 mi easy at 10:45–11:45/mi, keeping HR mostly ~145–158 (Garmin Z3).",
+  drills:"5–7 min: leg swings, A-skips, high knees, then 4×20 sec relaxed strides with 40–60 sec walk/jog.",
+  main:"4×400 m @ 1:58–2:02 each, then 3×800 m @ 4:05–4:10 each.",
+  recovery:"200 m easy jog after each 400; 400 m easy jog after the first two 800s.",
+  splits:"400s ≈ 7:55–8:08/mi effort. 800s ≈ 8:13–8:23/mi effort. Keep every rep smooth; no sprint finish.",
+  hr:"Warm-up mostly 145–158. Reps can rise through the 170s; do not chase HR early.",
+  cd:"1.0 mi very easy at ~11:15–12:15/mi."},
+ {w:2,title:"5 × 800 m",total:"~5.7 mi",
+  wu:"1.25 mi easy at 10:45–11:45/mi.",
+  drills:"Dynamic drills + 4×20 sec strides.",
+  main:"5×800 m @ 4:02–4:08 each.",
+  recovery:"400 m easy jog between reps.",
+  splits:"Aim to keep all five within ~4 sec. The first rep should feel almost too easy.",
+  hr:"RPE 7–8. HR may reach upper 170s late; avoid repeated max-HR spikes.",
+  cd:"1.0 mi easy."},
+ {w:3,title:"3 sets of 400–800–400",total:"~6.5 mi",
+  wu:"1.25 mi easy at 10:45–11:45/mi.",
+  drills:"Dynamic drills + 4×20 sec strides.",
+  main:"3 sets: 400 m @ 2:00–2:04 + 800 m @ 4:08–4:14 + 400 m @ 2:00–2:04.",
+  recovery:"200 m jog between reps inside a set; 400 m jog between sets.",
+  splits:"Think rhythm rather than speed. The 800s are the anchor; the 400s should feel crisp, not all-out.",
+  hr:"Mostly Z4 late in each set. Back off if form becomes strained.",
+  cd:"1.0 mi easy."},
+ {w:4,title:"Cutback: 8 × 400 m",total:"~5.1 mi",
+  wu:"1.25 mi easy.",
+  drills:"Dynamic drills + 4×20 sec strides.",
+  main:"8×400 m @ 2:00–2:05.",
+  recovery:"200 m very easy jog between reps.",
+  splits:"Stay relaxed enough that rep 8 looks like rep 2.",
+  hr:"Controlled Z4 / low Z5 effort; do not turn the cutback week into a race.",
+  cd:"1.0 mi easy."},
+ {w:5,title:"4 × 1200 m",total:"~6.0 mi",
+  wu:"1.25 mi easy.",
+  drills:"Dynamic drills + 4×20 sec strides.",
+  main:"4×1200 m @ 6:20–6:28 each.",
+  recovery:"400 m easy jog between reps.",
+  splits:"That is roughly 8:30–8:41/mi pace. Controlled threshold, not 5K effort.",
+  hr:"Let HR rise gradually into Z4; avoid starting a rep already breathless.",
+  cd:"1.0 mi easy."},
+ {w:6,title:"3 × 1600 m threshold",total:"~6.0 mi",
+  wu:"1.5 mi easy.",
+  drills:"Dynamic drills + 4×20 sec strides.",
+  main:"3×1600 m @ 8:30–8:40 each.",
+  recovery:"400 m easy jog after reps 1 and 2.",
+  splits:"Even pacing. Do not run the first mile in 8:15 because you feel fresh.",
+  hr:"RPE ~7. Finish controlled with good mechanics.",
+  cd:"1.0 mi easy."},
+ {w:7,title:"Track ladder: 400–800–1200–800–400",total:"~5.7 mi",
+  wu:"1.25 mi easy.",
+  drills:"Dynamic drills + 4×20 sec strides.",
+  main:"400 m @ 2:00–2:03; 800 m @ 4:06–4:12; 1200 m @ 6:20–6:28; 800 m @ 4:06–4:12; 400 m @ 2:00–2:03.",
+  recovery:"200 m after the first 400; 400 m after each 800; 600 m very easy after the 1200.",
+  splits:"Build into the ladder, stay controlled in the middle, finish crisp rather than sprinting.",
+  hr:"Z4 through the core of the session; full control is more important than the watch.",
+  cd:"1.0 mi easy."},
+ {w:8,title:"Cutback: 10 × 400 m",total:"~5.9 mi",
+  wu:"1.25 mi easy.",
+  drills:"Dynamic drills + 4×20 sec strides.",
+  main:"10×400 m @ 2:00–2:04.",
+  recovery:"200 m easy jog between reps.",
+  splits:"Run in two mental sets of five. All reps should look similar.",
+  hr:"Keep the effort controlled. Stop at 8 reps if form or pace falls apart.",
+  cd:"1.0 mi easy."},
+ {w:9,title:"5 × 1200 m",total:"~7.2 mi",
+  wu:"1.5 mi easy.",
+  drills:"Dynamic drills + 4×20 sec strides.",
+  main:"5×1200 m @ 6:18–6:26 each.",
+  recovery:"400 m easy jog between reps.",
+  splits:"Threshold strength. Rep 5 should be your best-executed rep, not necessarily your fastest.",
+  hr:"Z4 late in reps; avoid redlining.",
+  cd:"1.0 mi easy."},
+ {w:10,title:"6 × 800 m",total:"~6.7 mi",
+  wu:"1.5 mi easy.",
+  drills:"Dynamic drills + 4×20 sec strides.",
+  main:"6×800 m @ 4:00–4:06 each.",
+  recovery:"400 m easy jog between reps.",
+  splits:"Use 400 m checkpoints of ~2:00–2:03. No rep faster than 3:58.",
+  hr:"Hard but repeatable. If you repeatedly touch near-max HR, slow 3–5 sec per 800.",
+  cd:"1.0 mi easy."},
+ {w:11,title:"3 × 1600 m",total:"~6.5 mi",
+  wu:"1.5 mi easy.",
+  drills:"Dynamic drills + 4×20 sec strides.",
+  main:"3×1600 m @ 8:28–8:38.",
+  recovery:"800 m easy jog between reps.",
+  splits:"Long, controlled threshold reps. Your breathing should settle during each recovery.",
+  hr:"Mostly Z4 by the second half of each rep.",
+  cd:"1.0 mi easy."},
+ {w:12,title:"Cutback mix: 400s + 200s",total:"~5.5 mi",
+  wu:"1.25 mi easy.",
+  drills:"Dynamic drills + 4×20 sec strides.",
+  main:"6×400 m @ 2:00–2:04, then 4×200 m @ 57–60 sec relaxed-fast.",
+  recovery:"200 m jog between 400s; 200 m walk/jog between 200s; 400 m easy before starting the 200s.",
+  splits:"The 200s are for mechanics and turnover, not sprinting.",
+  hr:"Keep the session light enough to support the cutback week.",
+  cd:"1.0 mi easy."},
+ {w:13,title:"4 × 1600 m marathon-strength threshold",total:"~7.2 mi",
+  wu:"1.5 mi easy.",
+  drills:"Dynamic drills + 4×20 sec strides.",
+  main:"4×1600 m @ 8:30–8:40.",
+  recovery:"400 m easy jog between reps.",
+  splits:"A strong aerobic session, but Saturday remains more important.",
+  hr:"Controlled Z4. Do not exceed the prescription to prove fitness.",
+  cd:"1.0 mi easy."},
+ {w:14,title:"2 × 2000 m + 4 × 400 m",total:"~7.0 mi",
+  wu:"1.5 mi easy.",
+  drills:"Dynamic drills + 4×20 sec strides.",
+  main:"2×2000 m @ 10:40–10:50, then 4×400 m @ 2:00–2:04.",
+  recovery:"600 m easy between the 2000s; 400 m easy before the 400s; 200 m jog between 400s.",
+  splits:"Long reps build threshold strength; the 400s finish with efficient turnover.",
+  hr:"Keep the 2000s at controlled threshold. The 400s should feel quick but smooth.",
+  cd:"1.0 mi easy."},
+ {w:15,title:"4 × 800 m + 4 × 400 m",total:"~6.6 mi",
+  wu:"1.25 mi easy.",
+  drills:"Dynamic drills + 4×20 sec strides.",
+  main:"4×800 m @ 4:05–4:10, then 4×400 m @ 2:00–2:04.",
+  recovery:"400 m jog between 800s; 400 m easy before the 400s; 200 m jog between 400s.",
+  splits:"This should feel sharp, not draining. Thursday marathon pace matters more this week.",
+  hr:"Stay out of maximal effort.",
+  cd:"1.0 mi easy."},
+ {w:16,title:"3 × 1200 m + 4 × 400 m",total:"~6.6 mi",
+  wu:"1.25 mi easy.",
+  drills:"Dynamic drills + 4×20 sec strides.",
+  main:"3×1200 m @ 6:22–6:30, then 4×400 m @ 2:02–2:06.",
+  recovery:"400 m jog between 1200s; 400 m easy before 400s; 200 m jog between 400s.",
+  splits:"Keep this deliberately controlled because Saturday is the key 18.6-mile marathon-specific run.",
+  hr:"Cap the effort at strong Z4, never all-out.",
+  cd:"1.0 mi easy."},
+ {w:17,title:"Taper: 4 × 800 m + 4 × 200 m",total:"~6.1 mi",
+  wu:"1.25 mi easy.",
+  drills:"Dynamic drills + 4×20 sec strides.",
+  main:"4×800 m @ 4:05–4:10, then 4×200 m @ 58–61 sec.",
+  recovery:"400 m jog between 800s; 400 m easy before 200s; 200 m easy between 200s.",
+  splits:"Crisp and comfortable. Finish with plenty left.",
+  hr:"Avoid accumulating fatigue; this is sharpening only.",
+  cd:"1.0 mi easy."},
+ {w:18,title:"Taper: 6 × 400 m",total:"~4.1 mi",
+  wu:"1.0 mi easy.",
+  drills:"Dynamic drills + 4×15 sec strides.",
+  main:"6×400 m @ 2:02–2:06.",
+  recovery:"200 m easy jog between reps.",
+  splits:"Relaxed race-week-style turnover. No straining.",
+  hr:"Controlled; ignore max HR and finish fresh.",
+  cd:"1.0 mi easy."},
+ {w:19,title:"Race-week strides",total:"~3.5 mi",
+  wu:"1.5 mi easy.",
+  drills:"A few leg swings and skips; keep everything light.",
+  main:"5×20 sec relaxed strides, gradually accelerating to fast-but-smooth.",
+  recovery:"60–90 sec easy walk/jog between strides.",
+  splits:"No timed interval target. These are neuromuscular reminders, not a workout.",
+  hr:"Do not chase HR.",
+  cd:"~1.8 mi easy to finish around 3.5 mi total."}
+];
+
+const trackSplits = [
+  ["Marathon pace","8:55–9:00/mi","~2:16–2:17","~4:31–4:34","~6:47–6:51","~9:02–9:09"],
+  ["Threshold","8:25–8:40/mi","~2:06–2:09","~4:11–4:19","~6:17–6:28","~8:22–8:37"],
+  ["Interval","7:55–8:16/mi","~1:58–2:03","~3:56–4:06","~5:54–6:10","~7:52–8:13"]
+];
+
+const weeks = [
+ {w:1,date:"Jul 27–Aug 2",mi:"24.9",tag:"Build",days:[
+  ["Tue","5.4 mi","4×400 m + 3×800 m","Track / Quality"],
+  ["Wed","3.5 mi","Easy aerobic; keep this deliberately light","Easy"],
+  ["Thu","3.5 mi","Easy + 6×20 sec relaxed strides","Aerobic"],
+  ["Sat","10.5 mi","Easy at ~10:45–11:45/mi; keep most of the run ~145–158 bpm","Long run"],
+  ["Sun","2.0 mi","Very easy / optional after current high impact load","Recovery"]]},
+ {w:2,date:"Aug 3–9",mi:"28.7",tag:"Build",days:[
+  ["Tue","5.7 mi","5×800 m","Track / Quality"],
+  ["Wed","4.3 mi","Z2 easy","Easy"],
+  ["Thu","5.0 mi","3×0.93 mi MP; 0.31 mi easy","Marathon pace"],
+  ["Sat","11.2 mi","Easy; last 1.9 mi Z3","Long run"],
+  ["Sun","2.5 mi","Z1 recovery","Recovery"]]},
+ {w:3,date:"Aug 10–16",mi:"30.7",tag:"Build",days:[
+  ["Tue","6.5 mi","3 sets: 400–800–400","Track / Quality"],
+  ["Wed","4.3 mi","Z2 easy","Easy"],
+  ["Thu","5.0 mi","Middle 2.5 mi Z3","Aerobic"],
+  ["Sat","12.4 mi","Z2 easy","Long run"],
+  ["Sun","2.5 mi","Z1 recovery","Recovery"]]},
+ {w:4,date:"Aug 17–23",mi:"25.0",tag:"Cutback",days:[
+  ["Tue","5.1 mi","8×400 m","Track / Quality"],
+  ["Wed","3.7 mi","Easy","Easy"],
+  ["Thu","3.7 mi","Z2 + strides","Aerobic"],
+  ["Sat","9.9 mi","Relaxed easy","Long run"],
+  ["Sun","2.5 mi","Recovery","Recovery"]]},
+ {w:5,date:"Aug 24–30",mi:"31.5",tag:"Build",days:[
+  ["Tue","6.0 mi","4×1200 m","Track / Quality"],
+  ["Wed","4.3 mi","Z2 easy","Easy"],
+  ["Thu","5.6 mi","2×1.55 mi MP","Marathon pace"],
+  ["Sat","13.0 mi","Last 2.5 mi @ 9:47–10:12/mi","Long run"],
+  ["Sun","2.5 mi","Z1 recovery","Recovery"]]},
+ {w:6,date:"Aug 31–Sep 6",mi:"32.7",tag:"Build",days:[
+  ["Tue","6.0 mi","3×1600 m","Track / Quality"],
+  ["Wed","4.3 mi","Z2 easy","Easy"],
+  ["Thu","6.2 mi","Aerobic; last 1.25 mi Z3","Aerobic"],
+  ["Sat","13.7 mi","Easy, preferably rolling terrain","Long run"],
+  ["Sun","2.5 mi","Recovery","Recovery"]]},
+ {w:7,date:"Sep 7–13",mi:"33.7",tag:"Build",days:[
+  ["Tue","5.7 mi","400–800–1200–800–400 ladder","Track / Quality"],
+  ["Wed","4.3 mi","Easy","Easy"],
+  ["Thu","5.6 mi","Z2 easy","Aerobic"],
+  ["Sat","14.9 mi","3.7 E + 2.5 MP + 1.25 E + 2.5 MP + 5.0 E","Long run"],
+  ["Sun","3.1 mi","Recovery","Recovery"]]},
+ {w:8,date:"Sep 14–20",mi:"28.2",tag:"Cutback",days:[
+  ["Tue","5.9 mi","10×400 m","Track / Quality"],
+  ["Wed","4.3 mi","Easy","Easy"],
+  ["Thu","4.3 mi","Z2 + strides","Aerobic"],
+  ["Sat","11.2 mi","Easy","Long run"],
+  ["Sun","2.5 mi","Recovery","Recovery"]]},
+ {w:9,date:"Sep 21–27",mi:"35.7",tag:"Build",days:[
+  ["Tue","7.2 mi","5×1200 m","Track / Quality"],
+  ["Wed","5.0 mi","Z2 easy","Easy"],
+  ["Thu","5.6 mi","1.25 E + 3.1 MP + 1.25 E","Marathon pace"],
+  ["Sat","15.5 mi","Z2 easy","Long run"],
+  ["Sun","2.5 mi","Recovery","Recovery"]]},
+ {w:10,date:"Sep 28–Oct 4",mi:"36.5",tag:"Build",days:[
+  ["Tue","6.7 mi","6×800 m","Track / Quality"],
+  ["Wed","5.0 mi","Easy","Easy"],
+  ["Thu","6.2 mi","Last 2.5 mi Z3","Aerobic"],
+  ["Sat","16.2 mi","Last 3.7 mi Z3 @ 9:39–10:12/mi","Long run"],
+  ["Sun","2.5 mi","Recovery","Recovery"]]},
+ {w:11,date:"Oct 5–11",mi:"37.5",tag:"Build",days:[
+  ["Tue","6.5 mi","3×1600 m","Track / Quality"],
+  ["Wed","5.0 mi","Easy","Easy"],
+  ["Thu","6.2 mi","Z2 + strides","Aerobic"],
+  ["Sat","16.8 mi","3.7 E + 3×1.9 MP with 0.62 E + easy finish","Long run"],
+  ["Sun","3.1 mi","Recovery","Recovery"]]},
+ {w:12,date:"Oct 12–18",mi:"29.1",tag:"Cutback",days:[
+  ["Tue","5.5 mi","6×400 m + 4×200 m","Track / Quality"],
+  ["Wed","4.3 mi","Easy","Easy"],
+  ["Thu","4.3 mi","Easy","Easy"],
+  ["Sat","12.4 mi","Relaxed","Long run"],
+  ["Sun","2.5 mi","Recovery","Recovery"]]},
+ {w:13,date:"Oct 19–25",mi:"38.8",tag:"Build",days:[
+  ["Tue","7.2 mi","4×1600 m","Track / Quality"],
+  ["Wed","5.0 mi","Easy","Easy"],
+  ["Thu","6.2 mi","Z2 easy","Aerobic"],
+  ["Sat","17.4 mi","3.7 E + 3.1 MP + 1.25 E + 3.1 MP + 6.2 E","Long run"],
+  ["Sun","3.1 mi","Recovery","Recovery"]]},
+ {w:14,date:"Oct 26–Nov 1",mi:"40.7",tag:"Peak durability",days:[
+  ["Tue","7.0 mi","2×2000 m + 4×400 m","Track / Quality"],
+  ["Wed","5.0 mi","Easy","Easy"],
+  ["Thu","6.2 mi","Easy","Easy"],
+  ["Sat","20.0 mi","16.0 E + final 4.0 mi Z3 only if controlled","Long run"],
+  ["Sun","2.5 mi","Recovery","Recovery"]]},
+ {w:15,date:"Nov 2–8",mi:"35.2",tag:"Cutback",days:[
+  ["Tue","6.6 mi","4×800 m + 4×400 m","Track / Quality"],
+  ["Wed","5.0 mi","Easy","Easy"],
+  ["Thu","6.2 mi","1.25 E + 4.35 MP + 0.62 E","Marathon pace"],
+  ["Sat","14.9 mi","Easy","Long run"],
+  ["Sun","2.5 mi","Recovery","Recovery"]]},
+ {w:16,date:"Nov 9–15",mi:"37.7",tag:"Peak specificity",days:[
+  ["Tue","6.6 mi","3×1200 m + 4×400 m","Track / Quality"],
+  ["Wed","5.0 mi","Easy","Easy"],
+  ["Thu","5.0 mi","Easy + 4 strides","Easy"],
+  ["Sat","18.6 mi","11.2 E + 6.2 MP + 1.25 E","Key long run"],
+  ["Sun","2.5 mi","Very easy / optional","Recovery"]]},
+ {w:17,date:"Nov 16–22",mi:"31.0",tag:"Taper",days:[
+  ["Tue","6.1 mi","4×800 m + 4×200 m","Track / Quality"],
+  ["Wed","4.3 mi","Easy","Easy"],
+  ["Thu","5.0 mi","Includes 2.5 mi MP","Marathon pace"],
+  ["Sat","13.0 mi","8.1 E + 3.7 MP + 1.25 E","Long run"],
+  ["Sun","2.5 mi","Recovery","Recovery"]]},
+ {w:18,date:"Nov 23–29",mi:"21.5",tag:"Taper",days:[
+  ["Tue","4.1 mi","6×400 m","Track / Quality"],
+  ["Wed","3.7 mi","Easy","Easy"],
+  ["Thu","3.7 mi","Easy + strides","Easy"],
+  ["Sat","7.5 mi","Easy with 3×0.62 mi MP","Long run"],
+  ["Sun","2.5 mi","Easy / optional","Recovery"]]},
+ {w:19,date:"Nov 30–Dec 6",mi:"34.7",tag:"Race week",days:[
+  ["Tue","3.5 mi","5×20 sec strides","Track / Quality"],
+  ["Wed","—","Rest / easy walk","Rest"],
+  ["Thu","3.1 mi","Includes 1.25 mi MP","Tune-up"],
+  ["Sat","1.9 mi","Shakeout + 4 short strides","Shakeout"],
+  ["Sun","26.2 mi","CALIFORNIA INTERNATIONAL MARATHON","RACE"]]}
+];
+
+function Metric({item}) {
+  return e("div",{className:"card metric"},
+    e("div",{className:"value"},item[1]),
+    e("div",{className:"label"},item[0]),
+    e("div",{className:"note"},item[2])
+  );
+}
+
+function MileageChart(){
+  const vals=weeks.map(w=>parseFloat(w.mi));
+  const W=920,H=220,pad=36,max=42;
+  const pts=vals.map((v,i)=>{
+    const x=pad+i*((W-pad*2)/(vals.length-1));
+    const y=H-pad-(v/max)*(H-pad*2);
+    return [x,y];
+  });
+  const path=pts.map((p,i)=>(i?"L":"M")+p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ");
+  return e("div",{className:"card"},
+    e("h2",null,"Weekly mileage progression"),
+    e("p",{className:"small muted"},"Starts with a conservative 24.9-mile absorption week because Garmin currently flags running impact above tolerance, then builds with regular cutbacks and peaks just under 40 miles."),
+    e("svg",{viewBox:`0 0 ${W} ${H}`,className:"chart",role:"img","aria-label":"Weekly mileage chart"},
+      [20,30,40].map(v=>{
+        const y=H-pad-(v/max)*(H-pad*2);
+        return e(React.Fragment,{key:v},
+          e("line",{x1:pad,y1:y,x2:W-pad,y2:y,stroke:"rgba(158,178,201,.18)","stroke-width":"1"}),
+          e("text",{x:2,y:y+4,fill:"#9eb2c9","font-size":"12"},v+" mi")
+        )
+      }),
+      e("path",{d:path,fill:"none",stroke:"#72e1b8","stroke-width":"4","stroke-linecap":"round","stroke-linejoin":"round"}),
+      pts.map((p,i)=>e("circle",{key:i,cx:p[0],cy:p[1],r:4.5,fill:"#07111f",stroke:"#72e1b8","stroke-width":"3"})),
+      [0,3,7,11,15,18].map(i=>e("text",{key:i,x:pts[i][0]-8,y:H-7,fill:"#9eb2c9","font-size":"12"},"W"+(i+1)))
+    ),
+    e("div",{className:"legend"},
+      e("span",null,"Peak: 40.7 mi"),
+      e("span",null,"Longest run: 20.0 mi · Key MP run: 18.6 mi"),
+      e("span",null,"Race: 26.2 mi")
+    )
+  );
+}
+
+
+const dayOrder = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+const dayOffset = {Mon:0,Tue:1,Wed:2,Thu:3,Fri:4,Sat:5,Sun:6};
+const startDate = new Date(2026,6,27,12,0,0);
+
+function dateFor(weekNum,dow){
+  const d = new Date(startDate);
+  d.setDate(d.getDate() + (weekNum-1)*7 + dayOffset[dow]);
+  return d;
+}
+function niceDate(d){
+  return d.toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric",year:"numeric"});
+}
+function shortDate(d){
+  return d.toLocaleDateString("en-US",{month:"short",day:"numeric"});
+}
+function weekEntry(week,dow){ return week.days.find(d=>d[0]===dow); }
+
+function prescribeDay(week,dow){
+  const date = dateFor(week.w,dow);
+  const iso = date.toISOString().slice(0,10);
+  if(dow==="Mon"){
+    return {date,iso,dow,week:week.w,title:"Rest + strength",type:"Rest",distance:"No run",
+      pace:"—",hr:"—",
+      structure:"No running. Do 25–35 minutes of strength: split squats/lunges, Romanian deadlifts, straight-knee calf raises, bent-knee soleus raises, hamstring work, and core stability. Keep 2–3 reps in reserve.",
+      note:"If your legs are unusually sore from Saturday, reduce the load rather than forcing strength."};
+  }
+  if(dow==="Fri"){
+    return {date,iso,dow,week:week.w,title:"Rest day",type:"Rest",distance:"No run",
+      pace:"—",hr:"—",
+      structure:"Rest from running. Normal walking/mobility is fine. Prioritize hydration, sleep, and getting ready for Saturday's long run.",
+      note:"Do not add a make-up workout here unless the plan has been deliberately rearranged."};
+  }
+  if(dow==="Tue"){
+    const t=trackWorkouts[week.w-1];
+    return {date,iso,dow,week:week.w,title:t.title,type:"Track / Quality",distance:t.total,
+      pace:"Easy running 10:45–11:45/mi; interval targets listed below",hr:t.hr,
+      structure:t.main,note:t.splits,track:t};
+  }
+  const raw=weekEntry(week,dow);
+  if(!raw) return {date,iso,dow,week:week.w,title:"Rest / optional mobility",type:"Rest",distance:"No run",pace:"—",hr:"—",structure:"No scheduled run.",note:"Recover."};
+  const [_,distance,details,type]=raw;
+
+  if(dow==="Wed"){
+    return {date,iso,dow,week:week.w,title:"Easy aerobic run",type,distance,
+      pace:"10:45–11:45/mi",hr:"~145–158 bpm · Garmin Z3; keep it conversational",
+      structure:`Run ${distance} continuously at easy Z2 effort. Do not turn the final miles into a progression unless specifically prescribed.`,
+      note:"If fatigue is accumulating, this is the first weekday run to shorten."};
+  }
+  if(dow==="Sun" && week.w===19){
+    return {date,iso,dow,week:week.w,title:"CIM — Race Day",type:"RACE",distance:"26.2 mi",
+      pace:"Average target ~8:58/mi; first 3.1 mi ~9:03–9:08/mi",hr:"Race by controlled effort; do not chase HR in the opening miles",
+      structure:"0–3.1 mi controlled at 9:03–9:08/mi. 3.1–9.3 mi settle around 8:55–9:00/mi. 9.3–18.6 mi hold ~8:55–9:00/mi by effort. After 23 mi, progress only if you still have control.",
+      note:"Target halfway around 1:57:30–1:58:00. A 3:55 goal gives you useful margin for sub-4, but do not bank time early on CIM's downhill course."};
+  }
+  if(dow==="Sun"){
+    const optional = details.toLowerCase().includes("optional");
+    return {date,iso,dow,week:week.w,title:optional?"Recovery run — optional":"Recovery run",type,distance,
+      pace:"11:45–12:45+/mi",hr:"~125–145 bpm · Garmin Z2 to low Z3",
+      structure:`Run ${distance} extremely easily. This is circulation/recovery, not aerobic testing.`,
+      note:optional?"Skip it if Saturday left meaningful soreness or fatigue.":"Keep the effort noticeably easier than Wednesday."};
+  }
+  if(dow==="Thu"){
+    let pace="10:45–11:45/mi", hr="150–159 bpm", structure=`Run ${distance} at easy Z2 effort. ${details}`;
+    if(details.includes("MP")){
+      pace="Easy: 10:45–11:45/mi · MP: 8:55–9:00/mi";
+      hr="Easy: ~145–158 · MP: ~165–173 bpm (Garmin Z4)";
+      structure=`Run ${distance} total. Use easy running before/between/after the prescribed marathon-pace work. ${details}. Marathon-pace segments should feel controlled and repeatable.`;
+    } else if(details.includes("Z3")){
+      pace="Easy: 10:45–11:45/mi · Z3: 9:50–10:25/mi";
+      hr="Easy: ~145–158 · steady: ~159–166 bpm";
+      structure=`Run ${distance} total. ${details}. Build into Z3 gradually rather than jumping the pace.`;
+    } else if(details.toLowerCase().includes("strides")){
+      pace="Easy: 10:45–11:45/mi · strides: relaxed fast, no pace target";
+      hr="Easy: 150–159 bpm; ignore HR during short strides";
+      structure=`Run ${distance} mostly easy. Finish with the prescribed strides on flat ground, accelerating smoothly for ~20 sec and fully recovering between each.`;
+    }
+    return {date,iso,dow,week:week.w,title:type==="Marathon pace"?"Marathon-specific run":"Aerobic / medium run",type,distance,pace,hr,structure,note:"Thursday supports Saturday. Never make it so hard that the long run suffers."};
+  }
+  if(dow==="Sat"){
+    if(week.w===19){
+      return {date,iso,dow,week:week.w,title:"Shakeout run",type:"Shakeout",distance,
+        pace:"11:00–12:00/mi easy",hr:"Keep it easy; HR is secondary",
+        structure:"Run 1.9 mi very easily, then include 4 short relaxed strides with full walking/jogging recovery.",
+        note:"You should finish feeling fresher, not trained."};
+    }
+    let pace="10:45–11:45/mi", hr="Aim ~145–155 bpm early; generally stay ≤158 on ordinary easy long runs", structure=`Run ${distance} easy. ${details}`;
+    if(details.includes("MP")){
+      pace="Easy: 10:45–11:45/mi · MP: 8:55–9:00/mi";
+      hr="Easy sections ~150–159 · MP may reach ~165–173 bpm";
+      structure=`Run ${distance} total exactly as prescribed: ${details}. Fuel from early in the run and keep the first easy section truly easy.`;
+    } else if(details.includes("Z3")){
+      pace="Easy: 10:45–11:45/mi · Z3: 9:50–10:25/mi";
+      hr="Easy ~145–158 · steady ~159–166 bpm";
+      structure=`Run ${distance} total. ${details}. Only progress if your form and breathing are controlled.`;
+    }
+    return {date,iso,dow,week:week.w,title:"Saturday long run",type:"Long run",distance,pace,hr,structure,
+      note:"Fuel runs over ~90 minutes. Build toward ~50–70 g carbohydrate/hour and practice race-day fluids/gels."};
+  }
+  // Race Sunday special
+  if(week.w===19 && dow==="Sun"){
+    return {date,iso,dow,week:week.w,title:"CIM — Race Day",type:"RACE",distance:"26.2 mi",
+      pace:"Average target ~8:58/mi; first 3.1 mi ~9:03–9:08/mi",hr:"Race by controlled effort; do not chase HR in the opening miles",
+      structure:"0–3.1 mi controlled at 9:03–9:08/mi. 3.1–9.3 mi settle around 8:55–9:00/mi. 9.3–18.6 mi hold ~8:55–9:00/mi by effort. After 23 mi, progress only if you still have control.",
+      note:"Target halfway around 1:57:30–1:58:00. A 3:55 goal gives you useful margin for sub-4, but do not bank time early on CIM's downhill course."};
+  }
+  return {date,iso,dow,week:week.w,title:type,distance,pace:"See workout details",hr:"Use effort",structure:details,note:"Stay controlled."};
+}
+
+
+const LOG_KEY = "utkarsh-cim-2026-training-log-v1";
+
+function loadTrainingLog(){
+  try { return JSON.parse(localStorage.getItem(LOG_KEY) || "{}"); }
+  catch(e) { return {}; }
+}
+function saveTrainingLog(log){
+  try { localStorage.setItem(LOG_KEY,JSON.stringify(log)); } catch(e) {}
+}
+function plannedMiles(distance){
+  if(!distance || distance==="No run" || distance==="—") return 0;
+  const m=String(distance).match(/(\d+(?:\.\d+)?)/);
+  return m ? parseFloat(m[1]) : 0;
+}
+function parseDurationToSeconds(v){
+  if(!v) return null;
+  const parts=String(v).trim().split(":").map(Number);
+  if(parts.some(x=>Number.isNaN(x))) return null;
+  if(parts.length===2) return parts[0]*60+parts[1];
+  if(parts.length===3) return parts[0]*3600+parts[1]*60+parts[2];
+  return null;
+}
+function secondsToPace(sec){
+  if(sec==null || !Number.isFinite(sec) || sec<=0) return "";
+  const min=Math.floor(sec/60);
+  const s=Math.round(sec-min*60);
+  return `${min}:${String(s===60?0:s).padStart(2,"0")}${s===60?" (≈"+(min+1)+":00)":""}/mi`;
+}
+function derivedPace(distance,duration){
+  const d=parseFloat(distance);
+  const sec=parseDurationToSeconds(duration);
+  if(!Number.isFinite(d) || d<=0 || !sec) return "";
+  const pace=sec/d;
+  const min=Math.floor(pace/60);
+  const s=Math.round(pace-min*60);
+  if(s===60) return `${min+1}:00/mi`;
+  return `${min}:${String(s).padStart(2,"0")}/mi`;
+}
+function statusLabel(status){
+  return status==="done"?"Done":status==="modified"?"Modified":status==="skipped"?"Skipped":"Planned";
+}
+function downloadText(filename,text,type){
+  const blob=new Blob([text],{type:type||"text/plain"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),500);
+}
+function allPrescribedDays(){
+  const arr=[];
+  weeks.forEach(w=>dayOrder.forEach(d=>arr.push(prescribeDay(w,d))));
+  return arr;
+}
+function logToCSV(log){
+  const days=allPrescribedDays();
+  const headers=["date","week","day","planned_workout","planned_distance","planned_pace","status","actual_distance_mi","duration","actual_pace","avg_hr","rpe","actual_workout","notes"];
+  const quote=v=>`"${String(v??"").replaceAll('"','""')}"`;
+  const rows=days.filter(d=>log[d.iso]).map(d=>{
+    const x=log[d.iso]||{};
+    const pace=x.actualPace||derivedPace(x.actualDistance,x.duration);
+    return [d.iso,d.week,d.dow,d.title,d.distance,d.pace,x.status||"planned",x.actualDistance||"",x.duration||"",pace,x.avgHr||"",x.rpe||"",x.actualWorkout||"",x.notes||""].map(quote).join(",");
+  });
+  return [headers.join(","),...rows].join("\n");
+}
+
+function DailyLogForm({day,entry,onSave,onDelete}){
+  const [form,setForm]=React.useState(()=>{
+    const base=entry||{};
+    return {
+      status:base.status||"planned",
+      actualDistance:base.actualDistance||"",
+      duration:base.duration||"",
+      actualPace:base.actualPace||"",
+      avgHr:base.avgHr||"",
+      rpe:base.rpe||"",
+      actualWorkout:base.actualWorkout||"",
+      notes:base.notes||""
+    };
+  });
+  React.useEffect(()=>{
+    const base=entry||{};
+    setForm({
+      status:base.status||"planned",
+      actualDistance:base.actualDistance||"",
+      duration:base.duration||"",
+      actualPace:base.actualPace||"",
+      avgHr:base.avgHr||"",
+      rpe:base.rpe||"",
+      actualWorkout:base.actualWorkout||"",
+      notes:base.notes||""
+    });
+  },[day.iso,entry]);
+
+  const set=(k,v)=>setForm(f=>({...f,[k]:v}));
+  const calcPace=form.actualPace||derivedPace(form.actualDistance,form.duration);
+  const planMi=plannedMiles(day.distance);
+  const actualMi=parseFloat(form.actualDistance);
+  const delta=Number.isFinite(actualMi)?actualMi-planMi:null;
+
+  return e("div",{className:"log-section"},
+    e("h3",null,"What I actually did"),
+    e("p",{className:"small muted"},"Saved in this browser. Log the workout here after training so the calendar can compare planned vs actual."),
+    e("div",{className:"compare-grid"},
+      e("div",{className:"compare-card"},
+        e("div",{className:"cap"},"Planned"),
+        e("div",{className:"big"},day.distance),
+        e("div",{className:"sub"},day.pace)
+      ),
+      e("div",{className:"compare-card"},
+        e("div",{className:"cap"},"Actual"),
+        e("div",{className:"big"},form.actualDistance?form.actualDistance+" mi":"Not logged"),
+        e("div",{className:"sub"},
+          calcPace || "Add distance + duration to calculate pace",
+          delta!==null && planMi>0 ? ` · ${delta>=0?"+":""}${delta.toFixed(1)} mi vs plan` : ""
+        )
+      )
+    ),
+    e("div",{className:"log-grid"},
+      e("div",{className:"field"},
+        e("label",null,"Status"),
+        e("select",{value:form.status,onChange:ev=>set("status",ev.target.value)},
+          e("option",{value:"planned"},"Planned / not logged yet"),
+          e("option",{value:"done"},"Completed as planned"),
+          e("option",{value:"modified"},"Completed with changes"),
+          e("option",{value:"skipped"},"Skipped / rest")
+        )
+      ),
+      e("div",{className:"field"},
+        e("label",null,"Actual distance (mi)"),
+        e("input",{type:"number",step:"0.01",min:"0",placeholder:"e.g. 5.42",value:form.actualDistance,onChange:ev=>set("actualDistance",ev.target.value)})
+      ),
+      e("div",{className:"field"},
+        e("label",null,"Duration"),
+        e("input",{type:"text",placeholder:"HH:MM:SS or MM:SS",value:form.duration,onChange:ev=>set("duration",ev.target.value)})
+      ),
+      e("div",{className:"field"},
+        e("label",null,"Actual avg pace"),
+        e("input",{type:"text",placeholder:calcPace||"e.g. 9:47/mi",value:form.actualPace,onChange:ev=>set("actualPace",ev.target.value)})
+      ),
+      e("div",{className:"field"},
+        e("label",null,"Average HR"),
+        e("input",{type:"number",min:"50",max:"230",placeholder:"bpm",value:form.avgHr,onChange:ev=>set("avgHr",ev.target.value)})
+      ),
+      e("div",{className:"field"},
+        e("label",null,"RPE (1–10)"),
+        e("input",{type:"number",min:"1",max:"10",step:"1",placeholder:"1 easy · 10 max",value:form.rpe,onChange:ev=>set("rpe",ev.target.value)})
+      ),
+      e("div",{className:"field full"},
+        e("label",null,"Actual workout / splits"),
+        e("textarea",{placeholder:"Example: 4×400: 2:00, 1:59, 2:01, 2:00; 3×800: 4:07, 4:06, 4:08",value:form.actualWorkout,onChange:ev=>set("actualWorkout",ev.target.value)})
+      ),
+      e("div",{className:"field full"},
+        e("label",null,"Notes"),
+        e("textarea",{placeholder:"How did it feel? Weather, soreness, fueling, sleep, anything useful.",value:form.notes,onChange:ev=>set("notes",ev.target.value)})
+      )
+    ),
+    calcPace && !form.actualPace && e("div",{className:"small muted",style:{marginTop:8}},"Calculated pace from distance + duration: ",e("strong",null,calcPace)),
+    e("div",{className:"log-actions"},
+      e("button",{className:"btn primary",onClick:()=>onSave({...form,actualPace:form.actualPace||calcPace,updatedAt:new Date().toISOString()})},"Save training log"),
+      entry && e("button",{className:"btn",onClick:onDelete},"Clear this log")
+    )
+  );
+}
+
+function ProgressSection({log,onImport}){
+  const days=allPrescribedDays();
+  const runDays=days.filter(d=>plannedMiles(d.distance)>0);
+  const logged=runDays.filter(d=>log[d.iso] && ["done","modified","skipped"].includes(log[d.iso].status));
+  const completed=runDays.filter(d=>log[d.iso] && ["done","modified"].includes(log[d.iso].status));
+  const actualMiles=runDays.reduce((sum,d)=>{
+    const x=log[d.iso]; const n=x?parseFloat(x.actualDistance):NaN;
+    return sum+(Number.isFinite(n)?n:0);
+  },0);
+  const plannedLoggedMiles=runDays.reduce((sum,d)=>{
+    const x=log[d.iso];
+    return sum+(x && ["done","modified","skipped"].includes(x.status)?plannedMiles(d.distance):0);
+  },0);
+  const adherence=logged.length?Math.round(completed.length/logged.length*100):0;
+  const loggedRows=days.filter(d=>log[d.iso] && log[d.iso].status!=="planned");
+
+  const importRef=React.useRef(null);
+  const handleImport=ev=>{
+    const file=ev.target.files?.[0]; if(!file) return;
+    const reader=new FileReader();
+    reader.onload=()=>{
+      try{
+        const parsed=JSON.parse(reader.result);
+        if(parsed && typeof parsed==="object") onImport(parsed);
+        else alert("That file does not contain a valid training log.");
+      }catch(err){ alert("Could not read that JSON backup."); }
+      ev.target.value="";
+    };
+    reader.readAsText(file);
+  };
+
+  return e("section",{id:"progress",className:"section"},
+    e("h2",null,"Planned vs actual"),
+    e("p",{className:"muted"},"Your daily entries from the clickable calendar roll up here automatically."),
+    e("div",{className:"summary-grid"},
+      e(Metric,{item:["Logged run days",String(logged.length),`${completed.length} completed/modified`]}),
+      e(Metric,{item:["Completion",adherence+"%","Completed or modified ÷ all resolved run days"]}),
+      e(Metric,{item:["Actual mileage",actualMiles.toFixed(1)+" mi","Across logged activities"]}),
+      e(Metric,{item:["Plan mileage resolved",plannedLoggedMiles.toFixed(1)+" mi","Planned mileage for days you've marked done/modified/skipped"]})
+    ),
+    e("div",{className:"backup-actions"},
+      e("button",{className:"btn",onClick:()=>downloadText("utkarsh-cim-training-log.csv",logToCSV(log),"text/csv")},"Export CSV"),
+      e("button",{className:"btn",onClick:()=>downloadText("utkarsh-cim-training-log-backup.json",JSON.stringify(log,null,2),"application/json")},"Backup JSON"),
+      e("button",{className:"btn",onClick:()=>importRef.current?.click()},"Restore JSON"),
+      e("input",{ref:importRef,className:"hidden-input",type:"file",accept:".json,application/json",onChange:handleImport})
+    ),
+    loggedRows.length===0
+      ? e("div",{className:"empty-state"},"No completed workouts logged yet. Click a calendar date, enter what you did, and save it.")
+      : e("div",{className:"table-wrap"},
+          e("table",{className:"log-table"},
+            e("thead",null,e("tr",null,["Date","Plan","Actual","Status","Pace","Avg HR","RPE","Notes"].map(x=>e("th",{key:x},x)))),
+            e("tbody",null,loggedRows.map(d=>{
+              const x=log[d.iso];
+              const pace=x.actualPace||derivedPace(x.actualDistance,x.duration)||"—";
+              return e("tr",{key:d.iso},
+                e("td",null,shortDate(d.date)),
+                e("td",null,d.distance),
+                e("td",null,x.actualDistance?x.actualDistance+" mi":"—"),
+                e("td",null,statusLabel(x.status)),
+                e("td",null,pace),
+                e("td",null,x.avgHr?x.avgHr+" bpm":"—"),
+                e("td",null,x.rpe||"—"),
+                e("td",{className:"notes-cell"},x.notes||x.actualWorkout||"—")
+              )
+            }))
+          )
+        )
+  );
+}
+
+function WorkoutModal({day,onClose,logEntry,onSaveLog,onDeleteLog}){
+  if(!day) return null;
+  const steps = day.track ? [
+    ["1 · Warm-up",day.track.wu],
+    ["2 · Drills + strides",day.track.drills],
+    ["3 · Main set",day.track.main],
+    ["4 · Recoveries",day.track.recovery],
+    ["5 · Rep targets",day.track.splits],
+    ["6 · Cool-down",day.track.cd]
+  ] : [["Workout",day.structure],["Coach note",day.note]];
+  return e("div",{className:"modal-backdrop",onClick:onClose},
+    e("div",{className:"modal-card",onClick:ev=>ev.stopPropagation()},
+      e("div",{className:"modal-head"},
+        e("div",null,
+          e("div",{className:"modal-date"},niceDate(day.date)+" · Week "+day.week),
+          e("div",{className:"modal-title"},day.title),
+          e("span",{className:"pill "+(day.type==="Long run"?"long":"")},day.type)
+        ),
+        e("button",{className:"close-btn",onClick:onClose,"aria-label":"Close"},"×")
+      ),
+      e("div",{className:"workout-kpis"},
+        e("div",{className:"workout-kpi"},e("span",null,"Distance"),e("strong",null,day.distance)),
+        e("div",{className:"workout-kpi"},e("span",null,"Pace"),e("strong",null,day.pace)),
+        e("div",{className:"workout-kpi"},e("span",null,"HR / effort"),e("strong",null,day.hr))
+      ),
+      e("div",{className:"step-list"},
+        steps.map((s,i)=>e("div",{className:"step",key:i},e("strong",null,s[0]),e("p",null,s[1])))
+      ),
+      e("div",{className:"callout",style:{marginTop:14}},
+        e("strong",null,"Morning Garmin adjustment: "),
+        "If Training Readiness is 50+ and your legs feel normal, do the workout as written. At 25–49, reduce quality volume by ~20–30% or make the day easy. At 1–24, or with pain/illness, rest. Because your Garmin sleep/HRV history is incomplete, how you actually feel can override the score."
+      ),
+      day.track && e("div",{className:"callout warn",style:{marginTop:14}},
+        e("strong",null,"Track rule: "),
+        day.track.hr+" "+day.track.splits
+      ),
+      e(DailyLogForm,{day,entry:logEntry,onSave:onSaveLog,onDelete:onDeleteLog})
+    )
+  );
+}
+
+function WeekCard({week,open,toggle,onSelectDay,log}){
+  const days=dayOrder.map(d=>prescribeDay(week,d));
+  return e("div",{className:"week"},
+    e("button",{className:"week-head",onClick:toggle,"aria-expanded":open},
+      e("span",{className:"week-num"},"W"+week.w),
+      e("span",null,
+        e("div",{className:"week-title"},week.date),
+        e("div",{className:"week-sub"},week.tag+" · click a date for full details"),
+        (()=>{const ds=dayOrder.map(d=>prescribeDay(week,d)).filter(d=>plannedMiles(d.distance)>0);
+          const done=ds.filter(d=>log[d.iso]&&["done","modified"].includes(log[d.iso].status));
+          const actual=ds.reduce((s,d)=>{const n=parseFloat(log[d.iso]?.actualDistance);return s+(Number.isFinite(n)?n:0)},0);
+          return e("div",{className:"week-progress"},e("strong",null,done.length+"/"+ds.length)," runs logged · ",actual.toFixed(1)," actual mi");
+        })()
+      ),
+      e("span",{className:"mileage"},week.mi+" mi"),
+      e("span",{className:"chev"},open?"−":"+")
+    ),
+    open && e("div",{className:"week-body"},
+      e("div",{className:"calendar-days"},
+        days.map(day=>{
+          const cls="date-card "+
+            (day.type==="Long run"?"long ":
+             day.type==="Track / Quality"?"quality ":
+             day.type==="RACE"?"race ":
+             day.type==="Rest"?"rest ":"");
+          const entry=log[day.iso];
+          const status=entry?.status||"planned";
+          const actual=entry?.actualDistance;
+          return e("button",{className:cls+(entry&&status!=="planned"?" logged":""),key:day.iso,onClick:()=>onSelectDay(day)},
+            e("div",{className:"date-top"},
+              e("div",null,e("div",{className:"date-label"},day.dow),e("div",{className:"date-num"},day.date.getDate())),
+              e("div",{className:"date-label"},shortDate(day.date).split(" ")[0])
+            ),
+            e("div",{className:"date-title"},day.title),
+            e("div",{className:"date-dist"},"Plan: "+day.distance),
+            actual && e("div",{className:"date-dist",style:{marginTop:2}},"Actual: "+actual+" mi"),
+            e("div",{className:"date-summary"},day.type==="Track / Quality" ? day.track.main : day.pace),
+            e("span",{className:"log-status "+status},statusLabel(status)),
+            e("div",{className:"click-hint"},entry?"Click to review / edit →":"Click for workout + log →")
+          )
+        })
+      )
+    )
+  );
+}
+
+function App(){
+  const [tab,setTab]=React.useState("overview");
+  const [openWeeks,setOpenWeeks]=React.useState(new Set([1,2,3,16,17,18,19]));
+  const [selectedDay,setSelectedDay]=React.useState(null);
+  const [trainingLog,setTrainingLog]=React.useState(()=>loadTrainingLog());
+  const [theme,setTheme]=React.useState(()=>{
+    try { return localStorage.getItem("cim-theme") || "system"; } catch(e) { return "system"; }
+  });
+
+  React.useEffect(()=>{
+    const root=document.documentElement;
+    const apply=()=>{
+      const resolved=theme==="system"
+        ? (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+        : theme;
+      root.setAttribute("data-theme",resolved);
+    };
+    apply();
+    try { localStorage.setItem("cim-theme",theme); } catch(e) {}
+    if(theme==="system" && window.matchMedia){
+      const mq=window.matchMedia("(prefers-color-scheme: dark)");
+      const handler=()=>apply();
+      mq.addEventListener ? mq.addEventListener("change",handler) : mq.addListener(handler);
+      return ()=>{ mq.removeEventListener ? mq.removeEventListener("change",handler) : mq.removeListener(handler); };
+    }
+  },[theme]);
+
+  React.useEffect(()=>{ saveTrainingLog(trainingLog); },[trainingLog]);
+
+  const saveDayLog=(day,entry)=>{
+    setTrainingLog(prev=>({...prev,[day.iso]:entry}));
+  };
+  const deleteDayLog=(day)=>{
+    setTrainingLog(prev=>{const n={...prev};delete n[day.iso];return n});
+  };
+  const restoreLog=(incoming)=>{
+    setTrainingLog(incoming);
+  };
+
+  const toggleWeek=(n)=>setOpenWeeks(prev=>{const s=new Set(prev);s.has(n)?s.delete(n):s.add(n);return s});
+  const allOpen=openWeeks.size===weeks.length;
+  const nav=[["overview","Overview"],["zones","Zones"],["plan","Calendar"],["progress","Progress Log"],["strength","Strength + Fuel"],["garmin","Garmin Data"],["race","Race Strategy"]];
+
+  const scrollTo=(id)=>{setTab(id); document.getElementById(id)?.scrollIntoView({behavior:"smooth",block:"start"})};
+
+  return e("main",{className:"app"},
+    e("section",{className:"hero"},
+      e("div",{className:"eyebrow"},"CIM 2026 · 3:55 MARATHON PROJECT"),
+      e("h1",null,"Utkarsh’s 19-Week",e("br"),"Marathon Plan"),
+      e("p",{className:"lead"},"A Garmin + Strava calibrated marathon dashboard starting Monday, July 27, 2026. Road mileage is in miles, track reps are in meters, and every calendar date is clickable. Log what you actually did each day to compare plan vs execution."),
+      e("div",{className:"badges"},
+        e("span",{className:"badge accent"},"Goal: 3:55:00"),
+        e("span",{className:"badge"},"Race: Dec 6, 2026"),
+        e("span",{className:"badge"},"Goal pace: ~8:58/mi"),
+        e("span",{className:"badge"},"Peak week: ~40.7 mi"),
+        e("span",{className:"badge"},"Peak long run: 20.0 mi")
+      ),
+      e("div",{className:"top-actions"},
+        e("button",{className:"btn primary",onClick:()=>scrollTo("plan")},"Open calendar"),
+        e("button",{className:"btn",onClick:()=>scrollTo("progress")},"View progress log"),
+        e("button",{className:"btn",onClick:()=>window.print()},"Print / Save as PDF")
+      )
+    ),
+
+    e("nav",{className:"nav"},
+      nav.map(n=>e("button",{key:n[0],className:tab===n[0]?"active":"",onClick:()=>scrollTo(n[0])},n[1])),
+      e("div",{className:"theme-control","aria-label":"Theme"},
+        ["light","dark","system"].map(t=>e("button",{key:t,className:theme===t?"active":"",onClick:()=>setTheme(t)},
+          t==="light"?"☀ Light":t==="dark"?"☾ Dark":"◐ System"
+        ))
+      )
+    ),
+
+    e("section",{id:"overview",className:"section"},
+      e("h2",null,"Athlete + goal"),
+      e("div",{className:"grid cols-4"},
+        e(Metric,{item:["Athlete",profile.name,`${profile.age} · ${profile.sex} · ${profile.location}`]}),
+        e(Metric,{item:["Goal","3:55:00","Target average pace ~8:58/mi · designed to create sub-4 margin"]}),
+        e(Metric,{item:["Race","CIM 2026",profile.raceDate]}),
+        e(Metric,{item:["Long-run day","Saturday","Protected throughout the entire plan"]})
+      ),
+      e("div",{style:{height:16}}),
+      e("div",{className:"callout"},
+        e("strong",null,"Primary training thesis: "),
+        "you have a meaningful speed reserve, but Garmin currently projects your race-day midpoint almost exactly at four hours while flagging running impact above tolerance. The plan therefore prioritizes durability, controlled quality, marathon-pace economy, and gradual mechanical adaptation."
+      ),
+      e("div",{style:{height:16}}),
+      e("h2",null,"What your Strava archive showed"),
+      e("div",{className:"grid cols-4"},baseline.map((m,i)=>e(Metric,{item:m,key:i}))),
+      e("div",{style:{height:16}}),
+      e(MileageChart)
+    ),
+
+    e("section",{id:"zones",className:"section"},
+      e("h2",null,"Training zones — Garmin calibrated"),
+      e("p",{className:"muted"},"Your Garmin profile uses max HR 201 bpm and lactate-threshold HR 179 bpm. The coach bands below are workout-specific bands, so their labels intentionally do not have to match the zone number displayed on your watch. For example, practical easy running for you often sits in Garmin Z3."),
+      e("div",{className:"callout",style:{marginBottom:16}},
+        e("strong",null,"Key calibration: "),
+        "Garmin auto-detected lactate threshold at about 179 bpm and ~8:47/mi on Jul 22. That is why the long threshold reps are prescribed around 8:30–8:47/mi rather than using your much faster recent 400/800 m track pace."
+      ),
+      e("div",{className:"table-wrap"},
+        e("table",null,
+          e("thead",null,e("tr",null,["Zone","Purpose","Pace","HR guide","RPE"].map(x=>e("th",{key:x},x)))),
+          e("tbody",null,zones.map(z=>e("tr",{key:z.z},
+            e("td",null,e("div",{className:"zone-name"},z.z+" · "+z.name)),
+            e("td",null,z.purpose),
+            e("td",{className:"pace"},z.pace),
+            e("td",null,z.hr),
+            e("td",null,z.rpe)
+          )))
+        )
+      ),
+      e("div",{style:{height:16}}),
+      e("h3",null,"What the Garmin watch itself will call these HR zones"),
+      e("div",{className:"table-wrap",style:{marginTop:10}},
+        e("table",null,
+          e("thead",null,e("tr",null,["Garmin zone","Heart rate","How to interpret it here"].map(x=>e("th",{key:x},x)))),
+          e("tbody",null,garminWatchZones.map((r,i)=>e("tr",{key:i},
+            e("td",{className:"zone-name"},r[0]),e("td",null,r[1]),e("td",null,r[2])
+          )))
+        )
+      ),
+      e("div",{style:{height:16}}),
+      e("div",{className:"grid cols-2"},
+        e("div",{className:"card"},
+          e("h3",null,"Easy-day rule"),
+          e("p",null,"If heat pushes your HR up, slow down. A genuinely easy run at 11:30/mi is more useful than forcing 10:30/mi with threshold-like effort.")
+        ),
+        e("div",{className:"card"},
+          e("h3",null,"Marathon-pace rule"),
+          e("p",null,"MP work is deliberately around 8:55–9:02/mi. Do not turn it into 8:40–8:50/mi just because you feel good.")
+        )
+      )
+    ),
+
+
+    e("section",{id:"plan",className:"section"},
+      e("div",{className:"week-toolbar"},
+        e("div",null,e("h2",null,"19-week clickable training calendar"),e("div",{className:"muted small"},"Click any date for exact distance, pace, HR/effort and workout structure · Saturday = long run"),e("div",{className:"muted small",style:{marginTop:4}},"Peak design: one 20.0-mi durability run + one 18.6-mi marathon-specific run with 6.2 mi at 3:55 pace")),
+        e("button",{className:"btn",onClick:()=>setOpenWeeks(allOpen?new Set():new Set(weeks.map(w=>w.w)))},allOpen?"Collapse all":"Expand all")
+      ),
+      e("div",{className:"callout warn",style:{marginBottom:14}},
+        e("strong",null,"Workout convention: "),
+        "track sessions now show the exact warm-up, drills, meter-based reps, recovery, split targets and cool-down. All seven days appear in each week, including rest and strength days."
+      ),
+      e("div",{className:"week-list"},weeks.map(w=>e(WeekCard,{week:w,key:w.w,open:openWeeks.has(w.w),toggle:()=>toggleWeek(w.w),onSelectDay:setSelectedDay,log:trainingLog})))
+    ),
+
+    e(ProgressSection,{log:trainingLog,onImport:restoreLog}),
+
+    e("section",{id:"strength",className:"section"},
+      e("h2",null,"Strength, fueling, and execution"),
+      e("div",{className:"grid cols-3"},
+        e("div",{className:"card"},
+          e("h3",null,"Strength"),
+          e("p",null,"Monday: 25–35 min. Wednesday: optional lighter 15–20 min."),
+          e("ul",null,
+            e("li",null,"Split squats or lunges"),
+            e("li",null,"Romanian deadlifts"),
+            e("li",null,"Straight-knee calf raises"),
+            e("li",null,"Bent-knee / soleus calf raises"),
+            e("li",null,"Hamstring work + simple core stability")
+          )
+        ),
+        e("div",{className:"card"},
+          e("h3",null,"Long-run fueling"),
+          e("p",null,"For runs beyond ~90 minutes, practice fueling from the start."),
+          e("ul",null,
+            e("li",null,"Build toward ~50–70 g carbohydrate/hour"),
+            e("li",null,"Use your intended race gels/drink during the 16–19 mi long runs"),
+            e("li",null,"Do not deliberately make key long runs fasted")
+          )
+        ),
+        e("div",{className:"card"},
+          e("h3",null,"If fatigue accumulates"),
+          e("p",null,"Protect the highest-value sessions. Cut in this order:"),
+          e("ul",null,
+            e("li",null,"First remove Sunday recovery"),
+            e("li",null,"Then shorten Wednesday"),
+            e("li",null,"Preserve Saturday, Tuesday, and most of Thursday")
+          )
+        )
+      ),
+      e("div",{style:{height:16}}),
+      e("div",{className:"callout"},
+        e("strong",null,"Key readiness test — Saturday, Nov 14: "),
+        "The plan now has two complementary peak Saturdays: Week 14 is a 20.0-mile durability run (16 easy + up to 4 steady only if controlled), while Week 16 is the race-specific test: 18.6 mi total with 11.2 mi easy + 6.2 mi at 8:55–9:00/mi + 1.25 mi easy. If that MP block stays controlled and well below threshold effort, a 3:55 attempt is supported and you have meaningful sub-4 margin."
+      )
+    ),
+
+
+    e("section",{id:"garmin",className:"section"},
+      e("h2",null,"Full Garmin intelligence"),
+      e("p",{className:"muted"},"This full Garmin account export is the strongest dataset so far. It includes activity summaries, training metrics, your CIM Garmin Coach plan, and 6,960 original FIT files. The dashboard now uses Garmin alongside Strava rather than treating Garmin as a small supporting snapshot."),
+      e("div",{className:"grid cols-4",style:{marginBottom:16}},
+        garminSnapshot.map((m,i)=>e(Metric,{item:m,key:i}))
+      ),
+      e("div",{className:"grid cols-2"},
+        e("div",{className:"card"},
+          e("h3",null,"What Garmin says right now"),
+          e("ul",null,
+            e("li",null,"Training Readiness: 62 (Moderate)"),
+            e("li",null,"Training Status: Maintaining"),
+            e("li",null,"Acute load 539 vs chronic 481; ratio 1.1 (Optimal)"),
+            e("li",null,"VO₂ max: 46"),
+            e("li",null,"Lactate threshold: 179 bpm at ~8:47/mi"),
+            e("li",null,"Heat acclimation: 21%, currently deacclimatizing")
+          )
+        ),
+        e("div",{className:"card"},
+          e("h3",null,"The useful contradiction"),
+          e("p",null,"Your cardiovascular training-load ratio is currently healthy, but Running Tolerance says the mechanical impact of your recent running is above your present tolerance after one hard run."),
+          e("p",{className:"small muted"},"That is why Week 1 is now 24.9 mi rather than immediately jumping to ~27 mi. We keep quality, but give your musculoskeletal load time to catch up.")
+        )
+      ),
+      e("div",{style:{height:16}}),
+      e("div",{className:"grid cols-3"},
+        e("div",{className:"card"},
+          e("h3",null,"Race predictor today"),
+          e("div",{className:"metric"},e("div",{className:"value"},"4:42:59"),e("div",{className:"label"},"Garmin current marathon prediction")),
+          e("p",{className:"small muted",style:{marginTop:10}},"This is a current-fitness estimate, and your historical speed suggests it should not be treated as a hard ceiling.")
+        ),
+        e("div",{className:"card"},
+          e("h3",null,"CIM projection"),
+          e("div",{className:"metric"},e("div",{className:"value"},"4:00:15"),e("div",{className:"label"},"Garmin projected midpoint by race day")),
+          e("p",{className:"small muted",style:{marginTop:10}},"This is strikingly close to your sub-4 target and supports the plan direction.")
+        ),
+        e("div",{className:"card"},
+          e("h3",null,"Garmin goal + our target"),
+          e("div",{className:"metric"},e("div",{className:"value"},"3:55:00"),e("div",{className:"label"},"Garmin Coach CIM goal")),
+          e("p",{className:"small muted",style:{marginTop:10}},"We are now using 3:55 as the working goal. The key test is making ~8:55–9:00/mi controlled late in long runs without turning those blocks into threshold efforts.")
+        )
+      ),
+      e("div",{style:{height:16}}),
+      e("h2",null,"Why your prescribed track reps are slower than your recent reps"),
+      e("p",{className:"muted"},"Your recent track work proves you have speed, but it has also been very costly. For marathon training, Tuesday should develop fitness without compromising the Saturday long run."),
+      e("div",{className:"table-wrap"},
+        e("table",null,
+          e("thead",null,e("tr",null,["Date","Garmin work segments","Session HR / load","Coaching interpretation"].map(x=>e("th",{key:x},x)))),
+          e("tbody",null,
+            e("tr",null,
+              e("td",null,"Jul 6"),
+              e("td",null,"400 m reps roughly 1:43–2:00; 800 m ~3:49"),
+              e("td",null,"Avg HR 169 · max 201 · Aerobic TE 4.8"),
+              e("td",null,"Very hard VO₂max-style stimulus")
+            ),
+            e("tr",null,
+              e("td",null,"Jul 13"),
+              e("td",null,"800 m reps roughly 3:37–3:40; 1600 m ~7:51"),
+              e("td",null,"Avg HR 172 · max 197 · Aerobic TE 4.8"),
+              e("td",null,"Much faster than required for sub-4 marathon development")
+            ),
+            e("tr",null,
+              e("td",null,"Jul 23"),
+              e("td",null,"400 m roughly 1:47–2:05; 800 m ~3:47; 1600 m ~7:49"),
+              e("td",null,"Avg HR 165 · max 194 · Aerobic TE 4.1"),
+              e("td",null,"Strong speed reserve; keep future reps controlled")
+            )
+          )
+        )
+      ),
+      e("div",{style:{height:16}}),
+      e("div",{className:"callout warn"},
+        e("strong",null,"Important data-quality note: "),
+        "you are not consistently recording sleep/HRV with Garmin, so Training Readiness is less complete than your activity-load data. Use readiness as a secondary check, not an automatic command."
+      )
+    ),
+
+    e("section",{id:"race",className:"section"},
+      e("h2",null,"CIM race strategy"),
+      e("p",{className:"muted"},"CIM is net downhill with rolling terrain early and a flatter finish. Run the early descents by effort and avoid banking time."),
+      e("div",{className:"card"},
+        [
+          ["0–3.1 mi","9:03–9:08/mi","Deliberately controlled. Do not bank time on the early downhill."],
+          ["3.1–9.3 mi","8:55–9:00/mi","Settle into 3:55 rhythm without forcing the downhills."],
+          ["9.3–18.6 mi","~8:55–9:00/mi by effort","Hold the line; don't chase every split on hills."],
+          ["18.6–23.0 mi","Protect form","Fuel, cadence, posture, and patience."],
+          ["23.0–26.2 mi","Progress if controlled","Only start squeezing the pace if your legs and breathing are still stable."],
+          ["Halfway","~1:57:30–1:58:00","On 3:55 pace, but still controlled enough to protect the final 10K."]
+        ].map((r,i)=>e("div",{className:"race-row",key:i},
+          e("strong",null,r[0]),e("span",{className:"pace"},r[1]),e("span",null,r[2])
+        ))
+      ),
+      e("div",{style:{height:16}}),
+      e("div",{className:"callout warn"},
+        e("strong",null,"Race-day mantra: "),
+        "your speed is not the question. The first 15 miles should feel almost too controlled; durability and fueling decide the final 10K."
+      )
+    ),
+
+    e(WorkoutModal,{
+      day:selectedDay,
+      onClose:()=>setSelectedDay(null),
+      logEntry:selectedDay?trainingLog[selectedDay.iso]:null,
+      onSaveLog:(entry)=>{if(selectedDay) saveDayLog(selectedDay,entry)},
+      onDeleteLog:()=>{if(selectedDay) deleteDayLog(selectedDay)}
+    }),
+
+    e("footer",{className:"footer"},
+      e("div",null,"Prepared for Utkarsh · CIM 2026 · 3:55 goal · Planned-vs-Actual training log · 20-mi peak · Light/Dark/System · Garmin + Strava"),
+      e("div",{style:{marginTop:6}},"This is a training plan, not medical advice. Adjust for pain, illness, unusual fatigue, heat, or recovery problems.")
+    )
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(e(App));
+</script>
+</body>
+</html>
